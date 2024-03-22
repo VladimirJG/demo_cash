@@ -5,12 +5,19 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.danilov.demo_cash.model.Person;
+import ru.danilov.demo_cash.repository.PersonRepository;
 
 import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class HighLoadService {
+    private final PersonRepository personRepository;
+
+    public HighLoadService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
     @Cacheable(cacheNames = {"personCache"}, key = "#personId")
     public Person getOrCreatePerson(int personId) {
         try {
